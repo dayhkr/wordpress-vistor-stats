@@ -3,7 +3,7 @@
  * Plugin Name: Visitor Stats
  * Plugin URI: https://github.com/dayhkr/wordpress-vistor-stats
  * Description: Track visitor statistics and display them in a comprehensive WordPress dashboard. Includes privacy features.
- * Version: 1.0.5
+ * Version: 1.0.6
  * Author: dayhkr
  * Author URI: https://github.com/dayhkr
  * License: GPL v2 or later
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('VISITOR_STATS_VERSION', '1.0.5');
+define('VISITOR_STATS_VERSION', '1.0.6');
 define('VISITOR_STATS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('VISITOR_STATS_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('VISITOR_STATS_PLUGIN_FILE', __FILE__);

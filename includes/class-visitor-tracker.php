@@ -68,6 +68,11 @@ class VisitorTracker {
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "' . admin_url('admin-ajax.php') . '", true);
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        console.log("Visitor Stats: AJAX response", xhr.status, xhr.responseText);
+                    }
+                };
                 xhr.send("action=visitor_stats_track_page&nonce=' . wp_create_nonce('visitor_stats_track_page') . '");
             }
         })();
@@ -176,9 +181,10 @@ class VisitorTracker {
             wp_die('Security check failed');
         }
         
-        // Don't track logged-in users
+        // Don't track logged-in users (but allow AJAX calls to complete)
         if (is_user_logged_in()) {
-            wp_die();
+            wp_send_json_success(array('message' => 'Logged-in user, not tracked'));
+            return;
         }
         
         // Get visitor data
@@ -226,9 +232,9 @@ class VisitorTracker {
         );
         
         // Record visit
-        $this->database->record_visit($visit_data);
+        $result = $this->database->record_visit($visit_data);
         
-        wp_die();
+        wp_send_json_success(array('message' => 'Visit recorded', 'result' => $result));
     }
     
     /**
@@ -300,7 +306,8 @@ class VisitorTracker {
         
         // Don't track logged-in users
         if (is_user_logged_in()) {
-            wp_die();
+            wp_send_json_success(array('message' => 'Logged-in user, behavior not tracked'));
+            return;
         }
         
         $behavior_data = array(
@@ -326,7 +333,8 @@ class VisitorTracker {
         
         // Don't track logged-in users
         if (is_user_logged_in()) {
-            wp_die();
+            wp_send_json_success(array('message' => 'Logged-in user, geo data not collected'));
+            return;
         }
         
         $ip = $this->get_visitor_ip();
