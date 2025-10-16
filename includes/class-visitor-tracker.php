@@ -176,6 +176,11 @@ class VisitorTracker {
             wp_die('Security check failed');
         }
         
+        // Don't track logged-in users
+        if (is_user_logged_in()) {
+            wp_die();
+        }
+        
         // Get visitor data
         $ip = $this->get_visitor_ip();
         if (!$ip || $this->settings->is_ip_excluded($ip)) {
@@ -293,6 +298,11 @@ class VisitorTracker {
             wp_die('Security check failed');
         }
         
+        // Don't track logged-in users
+        if (is_user_logged_in()) {
+            wp_die();
+        }
+        
         $behavior_data = array(
             'session_id' => sanitize_text_field($_POST['session_id']),
             'page_url' => esc_url_raw($_POST['page_url']),
@@ -312,6 +322,11 @@ class VisitorTracker {
     public function ajax_get_geo_data() {
         if (!wp_verify_nonce($_POST['nonce'], 'visitor_stats_get_geo_data')) {
             wp_die('Security check failed');
+        }
+        
+        // Don't track logged-in users
+        if (is_user_logged_in()) {
+            wp_die();
         }
         
         $ip = $this->get_visitor_ip();

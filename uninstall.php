@@ -29,3 +29,4 @@ delete_option('visitor_stats_db_version');
 
 // Clear any cached data
 wp_cache_flush();
+
